@@ -2,11 +2,12 @@ package com.aminmessenger.mymessenger.Controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aminmessenger.mymessenger.Entity.User;
 import com.aminmessenger.mymessenger.Service.UserService;
+import com.aminmessenger.mymessenger.dto.UserResponseDto;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -21,8 +22,14 @@ public class Home {
     }
     
     @GetMapping("/")
-    public List<User> getMethodName() {
-        return userService.getAll();
-    }
+    public ResponseEntity<List<UserResponseDto>> getMethodName() {
+
+        List<UserResponseDto> users = userService.getAll()
+        .stream()
+        .map(user -> new UserResponseDto(user.getUsername(), user.getFirstnName(), user.getLastName(), user.getEmail()))
+        .toList();
+
+        return ResponseEntity.ok(users);
+    }   
     
 }
