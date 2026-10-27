@@ -9,6 +9,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration 
 public class CorsConfig {
+    
     @Bean 
     public UrlBasedCorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration config = new CorsConfiguration();
@@ -24,7 +25,6 @@ public class CorsConfig {
         source.registerCorsConfiguration("/**", config);
 
         return source;
-
     }
 
 }
