@@ -30,6 +30,9 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "profile_picture")
+    private byte[] profilePicture;
+
     public Long getId(){
         return this.Id;
     }
@@ -72,5 +75,13 @@ public class User {
 
     public void setPassword(String password){
         this.password = password;
+    }
+
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+         this.profilePicture = profilePicture;
     }
 }

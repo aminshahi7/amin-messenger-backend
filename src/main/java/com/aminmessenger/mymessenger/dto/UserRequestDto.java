@@ -7,13 +7,15 @@ public class UserRequestDto {
     private String lastName;
     private String email;
     private String password;
+    private byte[] profilePicture;
 
-    public UserRequestDto(String username, String firstName, String lastName, String email, String password){
+    public UserRequestDto(String username, String firstName, String lastName, String email, String password, byte[] profilePicture){
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.profilePicture = profilePicture;
     }
 
     public void setUsername(String username){
@@ -54,5 +56,13 @@ public class UserRequestDto {
 
     public String getPassword(){
         return this.password;
+    }
+
+     public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+         this.profilePicture = profilePicture;
     }
 }

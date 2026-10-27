@@ -1,13 +1,16 @@
 package com.aminmessenger.mymessenger.Repository;
 
-import com.aminmessenger.mymessenger.Entity.User;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+import com.aminmessenger.mymessenger.Entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
 
     boolean existsByEmail(String email);
+
+    boolean existsByUsername(String username);
 }
