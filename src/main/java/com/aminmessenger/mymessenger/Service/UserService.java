@@ -1,13 +1,7 @@
 package com.aminmessenger.mymessenger.Service;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.aminmessenger.mymessenger.Entity.User;
 import com.aminmessenger.mymessenger.Repository.UserRepository;
@@ -16,7 +10,7 @@ import com.aminmessenger.mymessenger.dto.UserRequestDto;
 @Service 
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -28,49 +22,19 @@ public class UserService {
     public String hashPassword(String rawPassword) {
         return passwordEncoder.encode(rawPassword);
     }
-    
-    public List<User> getAll(){
-        return userRepository.findAll();
-    };
 
-    public User registerUser(
-            UserRequestDto dto,
-            MultipartFile profilePicture
-    ) throws IOException {
-
-        // Prüfen, ob der Username bereits existiert
-        if (userRepository.existsByUsername(dto.getUsername())) {
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
-                    "Username already exists"
-            );
-        }
-
-        // Prüfen, ob die E-Mail bereits existiert
-        if (userRepository.existsByEmail(dto.getEmail())) {
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
-                    "Email already exists"
-            );
-        }
-
-        // Neue User-Entity erstellen
+    public User save(UserRequestDto reqDto){
         User user = new User();
+        user.setFirstName(reqDto.getFirstName());
+        user.setLastName(reqDto.getLastName());
+        user.setUsername(reqDto.getUsername());
+        user.setEmail(reqDto.getEmail());
+        user.setPassword(hashPassword(reqDto.getPassword()));
 
-        user.setUsername(dto.getUsername());
-        user.setFirstName(dto.getFirstName());
-        user.setLastName(dto.getLastName());
-        user.setEmail(dto.getEmail());
+        userRepository.save(user);
 
-        // Passwort hashen
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        return user;
+    }
 
-        // Profilbild speichern, wenn eines hochgeladen wurde
-        if (profilePicture != null && !profilePicture.isEmpty()) {
-            user.setProfilePicture(profilePicture.getBytes());
-        }
-
-        // Benutzer in der Datenbank speichern
-        return userRepository.save(user);
-    }  
+    
 }
