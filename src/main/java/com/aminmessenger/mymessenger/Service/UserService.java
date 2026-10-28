@@ -3,6 +3,8 @@ package com.aminmessenger.mymessenger.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.lang.RuntimeException;
+
 import com.aminmessenger.mymessenger.Entity.User;
 import com.aminmessenger.mymessenger.Repository.UserRepository;
 import com.aminmessenger.mymessenger.dto.UserRequestDto;
@@ -24,6 +26,11 @@ public class UserService {
     }
 
     public User save(UserRequestDto reqDto){
+
+        if(userRepository.existsByEmail(reqDto.getEmail())){
+            throw new RuntimeException("Diese Email existiert schon");
+        }
+
         User user = new User();
         user.setFirstName(reqDto.getFirstName());
         user.setLastName(reqDto.getLastName());
