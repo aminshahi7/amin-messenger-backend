@@ -27,7 +27,7 @@ public class AuthCookieService {
         return base(jwt).maxAge(Duration.ofMillis(expiration)).build();
     }
 
-    public ResponseCookie deletCookie(){
+    public ResponseCookie deleteCookie(){
         return base("").maxAge(0).build();
     }
 }

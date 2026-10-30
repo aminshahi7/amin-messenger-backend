@@ -6,11 +6,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +20,9 @@ import com.aminmessenger.mymessenger.Cookie.AuthCookieService;
 import com.aminmessenger.mymessenger.Entity.User;
 import com.aminmessenger.mymessenger.Jwt.JwtService;
 import com.aminmessenger.mymessenger.Service.UserService;
-import com.aminmessenger.mymessenger.dto.UserRequestDto;
-import com.aminmessenger.mymessenger.dto.UserResponseDto;
+import com.aminmessenger.mymessenger.dto.LoginUserRequestDto;
+import com.aminmessenger.mymessenger.dto.SignUpUserRequestDto;
+import com.aminmessenger.mymessenger.dto.SignUpUserResponseDto;
 
 
 @RestController 
@@ -43,13 +44,13 @@ public class Home {
     }
     
     @PostMapping("/api/signup")
-    public ResponseEntity<UserResponseDto> signup(
-        @RequestBody UserRequestDto userDto
+    public ResponseEntity<SignUpUserResponseDto> signup(
+        @RequestBody SignUpUserRequestDto userDto
     )throws IOException{  
         
         User user = userService.save(userDto);
 
-        UserResponseDto resDto = new UserResponseDto(user.getUsername(), user.getFirstnName(), user.getLastName(), user.getEmail());
+        SignUpUserResponseDto resDto = new SignUpUserResponseDto(user.getUsername(), user.getFirstnName(), user.getLastName(), user.getEmail());
 
         return ResponseEntity
             .status(HttpStatus.OK)
@@ -57,17 +58,22 @@ public class Home {
     }
 
     @PostMapping("/api/login")
-    public ResponseEntity<?> login(@RequestBody UserRequestDto reqDto){
+    public ResponseEntity<?> login(@RequestBody LoginUserRequestDto reqDto){
 
-        Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(reqDto.getEmail(), reqDto.getPassword()));
+        try {
+            Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(reqDto.getEmail(), reqDto.getPassword()));
 
-        String token = jwtService.generateToken(reqDto.getEmail());
+            String role = authentication.getAuthorities().iterator().next().getAuthority().replace("ROLE_", "");
+            String jwt = jwtService.generateToken(authentication.getName());
 
-        ResponseCookie cookie = authCookieService.createCookie(token);
-
-        return ResponseEntity.ok()
-            .header(HttpHeaders.SET_COOKIE, cookie.toString())
-            .body(Map.of("email", auth.getName()));
+            return ResponseEntity.ok()
+            .header(HttpHeaders.SET_COOKIE, authCookieService.createCookie(jwt).toString())
+            .body(Map.of("email", authentication.getName(), "role", role));
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "E-Mail oder Passwort falsch"));
+        }
+        
     }
     
 }

@@ -1,17 +1,21 @@
 package com.aminmessenger.mymessenger.dto;
 
-public class UserResponseDto {
+public class SignUpUserRequestDto {
 
     private String username;
     private String firstName;
     private String lastName;
     private String email;
-    
-    public UserResponseDto(String username, String firstName, String lastName, String email){
+    private String password;
+    private byte[] profilePicture;
+
+    public SignUpUserRequestDto(String username, String firstName, String lastName, String email, String password, byte[] profilePicture){
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
+        this.profilePicture = profilePicture;
     }
 
     public void setUsername(String username){
@@ -44,5 +48,21 @@ public class UserResponseDto {
 
     public String getEmail(){
         return this.email;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
+    }
+
+    public String getPassword(){
+        return this.password;
+    }
+
+     public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+         this.profilePicture = profilePicture;
     }
 }

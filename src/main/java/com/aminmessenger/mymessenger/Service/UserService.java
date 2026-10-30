@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.aminmessenger.mymessenger.Entity.User;
 import com.aminmessenger.mymessenger.Repository.UserRepository;
-import com.aminmessenger.mymessenger.dto.UserRequestDto;
+import com.aminmessenger.mymessenger.dto.SignUpUserRequestDto;
 
 @Service 
 public class UserService {
@@ -23,7 +23,7 @@ public class UserService {
         return passwordEncoder.encode(rawPassword);
     }
 
-    public User save(UserRequestDto reqDto){
+    public User save(SignUpUserRequestDto reqDto){
 
         if(userRepository.existsByEmail(reqDto.getEmail())){
             throw new RuntimeException("Diese Email existiert schon");

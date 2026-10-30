@@ -1,12 +1,11 @@
 package com.aminmessenger.mymessenger.Jwt;
 
+import java.io.IOException;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-
 
 import com.aminmessenger.mymessenger.Cookie.AuthCookieService;
 
@@ -41,7 +40,7 @@ public class JwtFilter extends OncePerRequestFilter{
             var auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), role);
             SecurityContextHolder.getContext().setAuthentication(auth);
             } catch (JwtException | IllegalArgumentException e){
-            response.setHeader("Set-Cookie", cookie.deletCookie().toString());
+            response.setHeader("Set-Cookie", cookie.deleteCookie().toString());
             }
         }
 
