@@ -1,5 +1,6 @@
 package com.aminmessenger.mymessenger.Jwt;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,18 +11,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.aminmessenger.mymessenger.Cookie.AuthCookieService;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
-import jakarta.servlet.ServletException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
-
-import java.io.IOException;
-import java.net.http.HttpHeaders;
-
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtCookieFilter extends OncePerRequestFilter {
