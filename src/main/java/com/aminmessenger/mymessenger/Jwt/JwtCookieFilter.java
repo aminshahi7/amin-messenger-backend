@@ -52,7 +52,7 @@ public class JwtCookieFilter extends OncePerRequestFilter {
                 response.addHeader("Set-Cookie", cookies.deleteCookie().toString());
             }
         }
-        chain.doFilter(request, response);   // immer weitergeben; Security entscheidet danach
+        chain.doFilter(request, response);
     }
 
     private String readToken(HttpServletRequest request) {
