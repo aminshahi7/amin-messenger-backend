@@ -15,6 +15,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.aminmessenger.mymessenger.Jwt.JwtCookieFilter;
 
+//Kos dariaaa
+
 @Configuration 
 @EnableWebSecurity
 public class SecurityConfig {
