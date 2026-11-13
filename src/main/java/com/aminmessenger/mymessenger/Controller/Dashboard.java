@@ -1,8 +1,5 @@
 package com.aminmessenger.mymessenger.Controller;
 
-import java.util.Optional;
-
-import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;

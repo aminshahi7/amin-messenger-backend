@@ -3,7 +3,6 @@ package com.aminmessenger.mymessenger.Controller;
 import java.io.IOException;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +34,6 @@ public class Home {
     private final JwtService jwtService;
     private final AuthenticationManager authManager;
     private final AuthCookieService authCookieService;
-    @Value ("${app.cookie.secure}") private String cookieName;
-    @Value ("${jwt.expiration}") private Long expiration;
 
     public Home(UserService userService, JwtService jwtService, AuthenticationManager authManager, AuthCookieService authCookieService){
         this.userService = userService;
