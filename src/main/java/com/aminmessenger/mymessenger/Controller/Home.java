@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import com.aminmessenger.mymessenger.Service.UserService;
 import com.aminmessenger.mymessenger.dto.LoginUserRequestDto;
 import com.aminmessenger.mymessenger.dto.SignUpUserRequestDto;
 import com.aminmessenger.mymessenger.dto.SignUpUserResponseDto;
+
 
 
 @RestController 
@@ -42,6 +44,12 @@ public class Home {
         this.authManager = authManager;
         this.authCookieService = authCookieService;
     }
+
+    @GetMapping("")
+    public String getMethodName() {
+        return "Hello";
+    }
+    
     
     @PostMapping("/api/signup")
     public ResponseEntity<SignUpUserResponseDto> signup(
