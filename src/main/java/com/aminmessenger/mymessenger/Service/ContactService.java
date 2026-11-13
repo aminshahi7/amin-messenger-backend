@@ -11,11 +11,9 @@ import jakarta.transaction.Transactional;
 public class ContactService {
 
     private final UserRepository userRepository;
-    private final ContactService contactService;
     
-    public ContactService(UserRepository userRepository, ContactService contactService){
+    public ContactService(UserRepository userRepository){
         this.userRepository = userRepository;
-        this.contactService = contactService;
     }
 
     @Transactional 
