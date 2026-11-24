@@ -43,7 +43,7 @@ public class User {
         joinColumns= @JoinColumn (name="user_id"),
         inverseJoinColumns= @JoinColumn (name="contact_id")
     )
-    private Set<User> contacts = new HashSet<>();
+    private final Set<User> contacts = new HashSet<>();
 
     public Long getId(){
         return this.Id;
