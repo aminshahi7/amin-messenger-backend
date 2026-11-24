@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;  
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity 
@@ -14,8 +16,12 @@ public class Conversation {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long Id;
 
+    @ManyToOne 
+    @JoinColumn (name = "user_id")
     private User user;
 
+    @ManyToOne 
+    @JoinColumn(name = "contact_id")
     private User contact;
 
     public Long getId(){

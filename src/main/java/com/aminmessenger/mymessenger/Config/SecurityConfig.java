@@ -15,8 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.aminmessenger.mymessenger.Jwt.JwtCookieFilter;
 
-//Kos dariaaa
-
 @Configuration 
 @EnableWebSecurity
 public class SecurityConfig {
@@ -40,7 +38,7 @@ public class SecurityConfig {
             .cors(cors -> {})
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/login","/api/signup", "/api/users", "/").permitAll()
+                .requestMatchers("/api/login","/api/signup", "/api/users").permitAll()
                 .requestMatchers("/api/admin").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
