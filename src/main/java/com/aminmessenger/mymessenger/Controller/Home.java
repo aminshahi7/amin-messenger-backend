@@ -24,9 +24,7 @@ import com.aminmessenger.mymessenger.dto.LoginUserRequestDto;
 import com.aminmessenger.mymessenger.dto.SignUpUserRequestDto;
 import com.aminmessenger.mymessenger.dto.SignUpUserResponseDto;
 
-
-
-@RestController 
+@RestController
 @RequestMapping("/")
 public class Home {
 
@@ -35,7 +33,7 @@ public class Home {
     private final AuthenticationManager authManager;
     private final AuthCookieService authCookieService;
 
-    public Home(UserService userService, JwtService jwtService, AuthenticationManager authManager, AuthCookieService authCookieService){
+    public Home(UserService userService, JwtService jwtService, AuthenticationManager authManager, AuthCookieService authCookieService) {
         this.userService = userService;
         this.jwtService = jwtService;
         this.authManager = authManager;
@@ -46,39 +44,50 @@ public class Home {
     public String getMethodName() {
         return "Hello";
     }
-    
-    
+
+    @GetMapping("/auth/check")
+    public ResponseEntity<?> checkAuth(Authentication authentication) {
+
+        if (authentication == null) {
+            return ResponseEntity.status(401).body("Not authenticated");
+        }
+
+        return ResponseEntity.ok("Authenticated");
+    }
+
     @PostMapping("/api/signup")
     public ResponseEntity<SignUpUserResponseDto> signup(
-        @RequestBody SignUpUserRequestDto userDto
-    )throws IOException{  
-        
+            @RequestBody SignUpUserRequestDto userDto
+    ) throws IOException {
+
         User user = userService.save(userDto);
 
-        SignUpUserResponseDto resDto = new SignUpUserResponseDto(user.getUsername(), user.getFirstnName(), user.getLastName(), user.getEmail());
+        SignUpUserResponseDto resDto = new SignUpUserResponseDto(user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail());
 
         return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(resDto);
+                .status(HttpStatus.OK)
+                .body(resDto);
     }
 
     @PostMapping("/api/login")
-    public ResponseEntity<?> login(@RequestBody LoginUserRequestDto reqDto){
+    public ResponseEntity<?> login(@RequestBody LoginUserRequestDto reqDto) {
 
         try {
             Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(reqDto.getEmail(), reqDto.getPassword()));
 
             String role = authentication.getAuthorities().iterator().next().getAuthority().replace("ROLE_", "");
+
             String jwt = jwtService.generateToken(authentication.getName());
 
             return ResponseEntity.ok()
-            .header(HttpHeaders.SET_COOKIE, authCookieService.createCookie(jwt).toString())
-            .body(Map.of("email", authentication.getName(), "role", role));
+                    .header(HttpHeaders.SET_COOKIE, authCookieService.createCookie(jwt).toString())
+                    .body(Map.of("email", authentication.getName(), "role", role));
+
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("message", "E-Mail oder Passwort falsch"));
         }
-        
+
     }
-    
+
 }

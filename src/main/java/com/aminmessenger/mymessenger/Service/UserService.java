@@ -1,5 +1,8 @@
 package com.aminmessenger.mymessenger.Service;
 
+import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -7,14 +10,14 @@ import com.aminmessenger.mymessenger.Entity.User;
 import com.aminmessenger.mymessenger.Repository.UserRepository;
 import com.aminmessenger.mymessenger.dto.SignUpUserRequestDto;
 
-@Service 
+@Service
 public class UserService {
 
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository,       PasswordEncoder passwordEncoder){
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -23,9 +26,9 @@ public class UserService {
         return passwordEncoder.encode(rawPassword);
     }
 
-    public User save(SignUpUserRequestDto reqDto){
+    public User save(SignUpUserRequestDto reqDto) {
 
-        if(userRepository.existsByEmail(reqDto.getEmail())){
+        if (userRepository.existsByEmail(reqDto.getEmail())) {
             throw new RuntimeException("Diese Email existiert schon");
         }
 
@@ -41,5 +44,12 @@ public class UserService {
         return user;
     }
 
-    
+    public Optional<User> getUserByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
+
+    public Set<User> findAllContactByUserId(Long userId){
+        return userRepository.findAllContactByUserId(userId);
+    }
+
 }
