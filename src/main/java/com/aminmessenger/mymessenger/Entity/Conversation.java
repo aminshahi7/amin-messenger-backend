@@ -18,6 +18,10 @@ public class Conversation {
 
     private User contact;
 
+    public Long getId(){
+        return this.Id;
+    }
+
     public void serUser(User user ){
         this.user = user;
     }
